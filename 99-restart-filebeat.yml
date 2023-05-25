@@ -1,0 +1,12 @@
+---
+
+- hosts: client_servers
+  become: true
+  tasks:
+
+  - name: Restart filebeat
+    service:
+      name: filebeat
+      state: restarted
+
+
