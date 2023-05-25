@@ -1,6 +1,6 @@
 ---
 
-- hosts: client_dev_pages
+- hosts: elk_netbox
   become: true
   become_user: root
   
@@ -12,29 +12,29 @@
     filename: "{{ module_name }}.yml"
   tasks:
 
-  - name: enable module filebeat
-    shell: |
-     filebeat modules enable {{ module_name }}
+  #- name: enable module filebeat
+    #shell: |
+     #filebeat modules enable {{ module_name }}
 
-  - name: Copy filebeat.yml
-    copy:
-      src: "filebeat.yml"
-      dest: "/etc/filebeat/filebeat.yml"
-      mode: 0600
-      owner: root
-      group: root
+  #- name: Copy filebeat.yml
+    #copy:
+      #src: "filebeat.yml"
+      #dest: "/etc/filebeat/filebeat.yml"
+      #mode: 0600
+      #owner: root
+      #group: root
 
-  - name: Copy module configuration
-    copy:
-      src: "{{ filename }}"
-      dest: "/etc/filebeat/modules.d/{{ filename }}"
-      mode: 0644
-      owner: root
-      group: root
+  #- name: Copy module configuration
+    #copy:
+      #src: "{{ filename }}"
+      #dest: "/etc/filebeat/modules.d/{{ filename }}"
+      #mode: 0644
+      #owner: root
+      #group: root
 
-  - name: restart filebeat
-    shell: |
-     systemctl restart filebeat
+  #- name: restart filebeat
+    #shell: |
+     #systemctl restart filebeat
 
   #- name: Replace a localhost entry searching for a literal string to avoid escaping
     #ansible.builtin.lineinfile:

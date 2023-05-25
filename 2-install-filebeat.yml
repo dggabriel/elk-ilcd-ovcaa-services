@@ -9,6 +9,20 @@
       curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.7.1-amd64.deb
       sudo dpkg -i filebeat-8.7.1-amd64.deb
 
+  - name: Copy filebeat.yml
+    copy:
+      src: "filebeat.yml"
+      dest: "/etc/filebeat/filebeat.yml"
+      mode: 0600
+      owner: root
+      group: root
+
+  - name: restart filebeat
+    shell: |
+     systemctl restart filebeat
+
+
+
        
      
        
