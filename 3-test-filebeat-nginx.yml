@@ -8,21 +8,21 @@
     #changethis
     module_name: "apache"
     #changethis
-    ipaddress: "http://192.168.1.91"
+    ipaddress: "192.168.1.93"
     filename: "{{ module_name }}.yml"
   tasks:
 
-  #- name: enable module filebeat
-    #shell: |
-     #filebeat modules enable {{ module_name }}
+  - name: enable module filebeat
+    shell: |
+     rm /home/ilcadmin/filebeat.yml
 
-  #- name: Copy filebeat.yml
-    #copy:
-      #src: "filebeat.yml"
-      #dest: "/etc/filebeat/filebeat.yml"
-      #mode: 0600
-      #owner: root
-      #group: root
+  - name: Copy filebeat.yml
+    copy:
+      src: "filebeat.yml"
+      dest: "/home/ilcadmin/filebeat.yml"
+      mode: 0600
+      owner: root
+      group: root
 
   #- name: Copy module configuration
     #copy:
@@ -38,7 +38,7 @@
 
   #- name: Replace a localhost entry searching for a literal string to avoid escaping
     #ansible.builtin.lineinfile:
-      #dest: /etc/filebeat/filebeat.yml
+      #dest: ~/filebeat.yml
       #search_string: 'changeipaddress'
       #line: 192.168.1.90
       #owner: root
@@ -47,11 +47,26 @@
 
 
   #- name: Change ip address
-    #lineinfile:
-     #dest: /etc/filebeat/filebeat.yml
-     #regexp: 'changeipaddress'
-     #line: "{{ ipaddress }}"
-     #state: present
+    #replace:
+      #dest: filebeat.yml
+      #regexp: '(\s+)192\.168\.1\.90(\s+.*)?$'
+      #replace: '{{ ipaddress }}'
+      #state: present
+
+  - name: Change kibana ip address
+    lineinfile:
+     dest: /home/ilcadmin/filebeat.yml
+     regexp: '  host: "http://192.168.1.90:5601"'
+     line: '  host: "http://{{ ipaddress }}:5601"'
+     state: present
+
+  - name: Change elasticsearch ip address
+    lineinfile:
+     dest: /home/ilcadmin/filebeat.yml
+     regexp: '  hosts: "http://192.168.1.90:9200"'
+     line: '  hosts: ["http://{{ ipaddress }}:9200"]'
+     state: present
+
 
   #- name: Add new configuration to "pg_hba.conf"
     #blockinfile:

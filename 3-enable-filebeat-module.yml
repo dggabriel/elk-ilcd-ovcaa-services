@@ -7,8 +7,6 @@
   vars:
     #changethis
     module_name: "system"
-    #changethis
-    #ipaddress: "http://192.168.1.91"
     filename: "{{ module_name }}.yml"
   tasks:
 
@@ -28,25 +26,3 @@
     shell: |
      systemctl restart filebeat
 
-  #- name: Replace a localhost entry searching for a literal string to avoid escaping
-    #ansible.builtin.lineinfile:
-      #dest: /etc/filebeat/filebeat.yml
-      #search_string: 'changeipaddress'
-      #line: 192.168.1.90
-      #owner: root
-      #group: root
-      #mode: '0600'
-
-
-  #- name: Change ip address
-    #lineinfile:
-     #dest: /etc/filebeat/filebeat.yml
-     #regexp: 'changeipaddress'
-     #line: "{{ ipaddress }}"
-     #state: present
-
-  #- name: Add new configuration to "pg_hba.conf"
-    #blockinfile:
-     #dest: /etc/postgresql/13/main/pg_hba.conf
-     #block: |
-      #host    all             all             10.16.11.0/24                md5

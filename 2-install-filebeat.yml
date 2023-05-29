@@ -1,7 +1,12 @@
 ---
+#changethis
 - hosts: client_dev_pages
   become: true
   become_user: root
+
+  vars:
+  #changethis
+    ipaddress: "192.168.1.91"
   tasks:
 
   - name: install filebeat
@@ -16,6 +21,20 @@
       mode: 0600
       owner: root
       group: root
+
+  - name: Change kibana ip address
+    lineinfile:
+     dest: /etc/filebeat/filebeat.yml
+     regexp: '  host: "http://192.168.1.90:5601"'
+     line: '  host: "http://{{ ipaddress }}:5601"'
+     state: present
+
+  - name: Change elasticsearch ip address
+    lineinfile:
+     dest: /etc/filebeat/filebeat.yml
+     regexp: '  hosts: "http://192.168.1.90:9200"'
+     line: '  hosts: ["http://{{ ipaddress }}:9200"]'
+     state: present
 
   - name: restart filebeat
     shell: |
